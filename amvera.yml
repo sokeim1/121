@@ -1,0 +1,28 @@
+meta:
+  environment: python
+  toolchain:
+    name: docker
+    version: latest
+
+build:
+  commands:
+    - echo "Building with Docker"
+
+postinstall:
+  - apt-get update
+  - apt-get install -y ffmpeg
+
+run:
+  containerPort: 8080
+  healthcheck: false
+  
+resources:
+  memory: 512
+  
+env:
+  - BOT_TOKEN
+  - ADMIN_CHAT_IDS
+  - STORAGE_CHANNEL_ID
+  - MAX_FILE_SIZE
+  - MAX_FILE_SIZE_TIKTOK
+  - MAX_FILE_SIZE_YOUTUBE

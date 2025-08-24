@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  tiktok-bot:
+    build: .
+    container_name: tiktok-telegram-bot
+    restart: unless-stopped
+    environment:
+      - BOT_TOKEN=8258898931:AAGsElUJOY-Aursc7SWzoUj4lvs6pMAMvhI
+      - WEBHOOK_URL=${WEBHOOK_URL:-}
+      - PORT=${PORT:-8443}
+      - USE_PROXY=${USE_PROXY:-false}
+      - PROXY_URL=${PROXY_URL:-}
+      - MAX_FILE_SIZE=${MAX_FILE_SIZE:-52428800}
+      - ADMIN_CHAT_ID=${ADMIN_CHAT_ID:-}
+    ports:
+      - "${PORT:-8443}:${PORT:-8443}"
+    volumes:
+      - ./logs:/app/logs
+    command: python bot.py
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:${PORT:-8443}/health', timeout=5)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
