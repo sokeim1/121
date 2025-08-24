@@ -1703,4 +1703,12 @@ def download_without_ffmpeg(url):
 
 # Запуск диагностики и тестов (можно закомментировать после проверки)
 if __name__ == '__main__':
-    app.run()
+    WEBHOOK_URL = os.getenv('WEBHOOK_URL', 'https://one21-rj2p.onrender.com/')
+    PORT = int(os.environ.get('PORT', 8080))
+    app.run(
+        webhook=True,
+        webhook_host="0.0.0.0",
+        webhook_port=PORT,
+        webhook_path="/",
+        webhook_url=WEBHOOK_URL
+    )
